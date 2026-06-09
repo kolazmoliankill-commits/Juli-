@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para una persona especial ♥</title>
+    <style>
+        /* --- ESTILOS GENERALES Y FONDO --- */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe6ea 0%, #ffb3c1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        /* --- CONTENIDO --- */
+        h1 {
+            color: #ff4d6d;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .carta {
+            font-size: 1.1rem;
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            min-height: 80px;
+        }
+
+        /* --- BOTONES --- */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            height: 50px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+        }
+
+        #btn-si {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        #btn-si:hover {
+            transform: scale(1.1);
+            background-color: #ff758f;
+        }
+
+        #btn-no {
+            background-color: #6c757d;
+            color: white;
+            position: absolute;
+            left: 55%;
+        }
+
+        /* --- EFECTOS DE CORAZONES Y CELEBRACIÓN --- */
+        .corazon-flotante {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 24px;
+            animation: flotar 4s linear infinite;
+            opacity: 0;
+            bottom: -10px;
+            z-index: 1;
+        }
+
+        @keyframes flotar {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Ocultar secciones dinámicas */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-box">
+        <h1 id="titulo">¡Hola, Juli! ✨</h1>
+        <div class="carta" id="texto-carta">
+            Tengo algo muy importante que decirte... Haz clic abajo para descubrirlo.
+        </div>
+        
+        <div class="btn-container">
+            <button id="btn-si">Ver más</button>
+            <button id="btn-no" class="hidden">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Variables de control
+        let fase = 1;
+        const titulo = document.getElementById('titulo');
+        const textoCarta = document.getElementById('texto-carta');
+        const btnSi = document.getElementById('btn-si');
+        const btnNo = document.getElementById('btn-no');
+
+        // Textos que se mostrarán por fases
+        const textoFase2 = "Desde que te conocí, has hecho que mis días sean mucho más felices. Me encanta tu sonrisa, tu forma de ser y todo el tiempo que compartimos juntos... ❤️";
+        const preguntaFinal = "Por eso, Juli... hoy quiero preguntarte algo muy especial de manera diferente: ¿Te gustaría ser mi novia? 🌹";
+
+        btnSi.addEventListener('click', () => {
+            if (fase === 1) {
+                // Pasar a la carta/dedicatoria
+                titulo.textContent = "Para mi Juli hermosa";
+                textoCarta.textContent = textoFase2;
+                btnSi.textContent = "Siguiente";
+                fase = 2;
+            } else if (fase === 2) {
+                // Pasar a la pregunta final con el botón "No" esquivo
+                titulo.textContent = "Una pregunta...";
+                textoCarta.textContent = preguntaFinal;
+                btnSi.textContent = "¡SÍ! 💖";
+                btnNo.classList.remove('hidden'); // Aparece el botón No
+                // Reset de posiciones por si acaso
+                btnNo.style.position = 'absolute';
+                fase = 3;
+            } else if (fase === 3) {
+                // ¡Aceptó! Pantalla de victoria
+                celebracionFinal();
+            }
+        });
+
+        // --- EL TRUCO DEL BOTÓN "NO" ---
+        // Cuando Juli intente pasar el cursor (PC) o tocar (Móvil) el botón "No", este se mueve solo
+        const moverBotonNo = () => {
+            // Generar posiciones aleatorias dentro de la pantalla visible
+            const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 20);
+            
+            // Sacar el botón del contenedor y moverlo por toda la pantalla
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${x}px`;
+            btnNo.style.top = `${y}px`;
+        };
+
+        btnNo.addEventListener('mouseenter', moverBotonNo);
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Evita clics fantasma en móviles
+            moverBotonNo();
+        });
+
+        // --- FUNCIÓN DE VICTORIA ---
+        function celebracionFinal() {
+            titulo.textContent = "¡SABÍA QUE DIRÍAS QUE SÍ! 👑❤️";
+            textoCarta.innerHTML = "¡Me haces el chico más feliz del universo, Juli! <br> Prometo cuidarte, hacerte sonreír siempre y crear los mejores recuerdos juntos. ¡Gracias por aceptar! 🥰";
+            
+            // Ocultar botones
+            btnSi.classList.add('hidden');
+            btnNo.classList.add('hidden');
+
+            // Lluvia constante de corazones flotantes
+            setInterval(crearCorazon, 150);
+        }
+
+        function crearCorazon() {
+            const corazon = document.createElement('div');
+            corazon.classList.add('corazon-flotante');
+            corazon.innerText = ['❤️', '💖', '💝', '✨', '🌸'][Math.floor(Math.random() * 5)];
+            
+            // Posición horizontal aleatoria
+            corazon.style.left = Math.random() * 100 + "vw";
+            // Tamaño aleatorio
+            corazon.style.fontSize = Math.random() * 20 + 20 + "px";
+            // Duración de animación aleatoria
+            corazon.style.animationDuration = Math.random() * 2 + 3 + "s";
+            
+            document.body.appendChild(corazon);
+            
+            // Eliminar del DOM después de que termine la animación
+            setTimeout(() => {
+                corazon.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
